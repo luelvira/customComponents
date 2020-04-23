@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "target": "ESNext",
+        "module": "amd",
+        "outFile": "dist/js/customComponents/main.js",
+        "removeComments": true,
+        "watch": true,
+        "noImplicitAny": true
+    },
+    "include": [
+        "./src/ts/customComponents/**/*"
+    ],
+    "exclude": [
+        "./src/ts/@types"
+    ]
+}

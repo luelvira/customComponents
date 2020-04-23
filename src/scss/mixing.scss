@@ -1,0 +1,8 @@
+@mixin border_radius($first: 3%, $second: 50%) {
+	
+	border-bottom-left-radius: $first $second;
+	border-bottom-right-radius: $first $second;
+	border-top-right-radius: $first $second;
+	border-top-left-radius: $first $second;
+	
+}
