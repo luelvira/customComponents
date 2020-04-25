@@ -5,20 +5,32 @@ class CardMenu extends HTMLElement {
         this.availablesTags = [];
         this.tags = [];
         this.visible = true;
+        this.addEventListener('click', this.openCard);
+        this.open = false;
+        this.init();
     }
     init(availablesTags) {
-        this.availablesTags = [...availablesTags];
-        this.psrc = this.getAttribute('psrc');
-        this.ptitle = this.getAttribute('ptitle');
-        this.h4 = document.createElement('h4');
-        this.h4.innerHTML = this.ptitle;
-        this.img = document.createElement('img');
-        this.img.setAttribute('src', this.psrc);
-        this.p = document.createElement('p');
-        this.p.innerHTML = this.summary;
-        this.appendChild(this.h4);
-        this.appendChild(this.img);
-        this.appendChild(this.p);
+        try {
+            this.availablesTags = availablesTags ? [...availablesTags] : this.getAttribute("tags").split(/[, ]/);
+            this.psrc = this.getAttribute('psrc');
+            this.ptitle = this.getAttribute('ptitle');
+            this.h4 = document.createElement('h4');
+            this.h4.innerHTML = this.ptitle;
+            this.img = document.createElement('img');
+            this.img.setAttribute('src', this.psrc);
+            this.p = document.createElement('p');
+            this.p.innerHTML = this.summary;
+            this.div = document.createElement('div');
+            if (this.description)
+                this.div.innerHTML = this.description;
+            this.appendChild(this.h4);
+            this.appendChild(this.img);
+            this.appendChild(this.p);
+            this.appendChild(this.div);
+        }
+        catch (Exception) {
+            console.warn("The card is not register on the dom");
+        }
     }
     setSummary(s) {
         this.summary = s;
@@ -26,6 +38,7 @@ class CardMenu extends HTMLElement {
     }
     setDescription(d) {
         this.description = d;
+        this.div.innerHTML = d;
     }
     isVisible() {
         return this.visible;
@@ -58,9 +71,43 @@ class CardMenu extends HTMLElement {
             this.classList.toggle('hidden');
         }
     }
+    openCard(ev) {
+        if (this.open)
+            return;
+        let bk = this.managerBackground();
+        this.classList.add(CardMenu.activeClass);
+        this.open = true;
+    }
+    closeCard(e) {
+        let activeCard = document.getElementsByClassName(CardMenu.activeClass);
+        document.getElementsByClassName(CardMenu.activeBk)[0].classList.add('inactive');
+        assert(activeCard.length === 1, "Error: there is more than one active card");
+        for (var card of activeCard) {
+            card.classList.remove(CardMenu.activeClass);
+            card.setOpen(false);
+        }
+    }
+    managerBackground() {
+        let bks = document.getElementsByClassName(CardMenu.activeBk);
+        let bk;
+        if (document.getElementsByClassName(CardMenu.activeBk).length == 0) {
+            bk = document.createElement('div');
+            bk.classList.add(CardMenu.activeBk);
+            document.getElementsByTagName('body')[0].appendChild(bk);
+            bk.addEventListener('click', this.closeCard);
+        }
+        else
+            bk = bks[0];
+        bk.classList.remove('inactive');
+        return bk;
+    }
+    setOpen(state) {
+        this.open = state;
+    }
 }
+CardMenu.activeClass = 'my-card-active';
+CardMenu.activeBk = 'my-background';
 customElements.define('cards-menu', CardMenu);
-let sleep = (t) => new Promise((resolve, reject) => setTimeout(resolve, t));
 class FilterMenu extends HTMLElement {
     constructor() {
         super();
@@ -160,9 +207,15 @@ class ItemsMenu extends HTMLElement {
         card.setAttribute('psrc', c.src);
         card.init(this.parentNode.getCategories());
         card.setSummary(c.summary);
+        card.setDescription(c.description);
         card.setTags(c.tags);
         return card;
     }
 }
 customElements.define('filter-menu', FilterMenu);
 customElements.define('items-menu', ItemsMenu);
+let sleep = (t) => new Promise((resolve, reject) => setTimeout(resolve, t));
+function assert(cond, errorMessage) {
+    if (!cond)
+        throw errorMessage;
+}

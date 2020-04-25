@@ -1,7 +1,4 @@
 
-let sleep = (t:number) =>new Promise((resolve, reject) => setTimeout(resolve, t));
-
-
 class FilterMenu extends HTMLElement {
     private categories:string[];
     private actives:string[];
@@ -129,6 +126,7 @@ class ItemsMenu extends HTMLElement {
         card.setAttribute('psrc', c.src);
         card.init((<FilterMenu>this.parentNode).getCategories());
         card.setSummary(c.summary);
+        card.setDescription(c.description);
         card.setTags(c.tags);
         return card;
         
