@@ -29,7 +29,7 @@ class CardMenu extends HTMLElement {
             this.appendChild(this.div);
         }
         catch (Exception) {
-            console.warn("The card is not register on the dom");
+            console.warn("Missing the atributes");
         }
     }
     setSummary(s) {
@@ -210,6 +210,13 @@ class ItemsMenu extends HTMLElement {
         card.setDescription(c.description);
         card.setTags(c.tags);
         return card;
+    }
+    setColumn(n) {
+        if (n > 0 && n <= 8) {
+            this.ul.classList.remove(`col_${this.column}`);
+            this.column = n;
+            this.ul.classList.add(`col_${this.column}`);
+        }
     }
 }
 customElements.define('filter-menu', FilterMenu);

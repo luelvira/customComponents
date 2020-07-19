@@ -56,12 +56,18 @@ filter-menu {
 }
 
 items-menu {
-	.items-menu {
-		//@extend %flex;
-		//justify-content: flex-start;
-		//flex-wrap: wrap;
+	%base {
 		margin: 0;
 		padding: 0;
+		&[class*="col_"] {
+			display: flex;
+			flex-wrap: wrap;
+		}
+	}
+
+	.items-menu {
+		@extend %base;
+		//justify-content: flex-start;
 		@for $i from 1 through 8 {
 			&.col_#{$i} {
 				cards-menu {

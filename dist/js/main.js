@@ -10,7 +10,7 @@ let mycard = {
 let myCards = [{
         title: 'Prueba 2',
         description: "una pequeña descripción más o menos larga que permita conocer de que va todo esta mierda",
-        summary: "pequeñita descripción de la carta",
+        summary: "pequeñita descripción de la carta que vamos a hacer más grande para que no todas las fotos sean igual de tamaño y así poder ver como se configuran los distintos estados",
         src: "dist/media/img/img2.webp",
         tags: ["dos"]
     },

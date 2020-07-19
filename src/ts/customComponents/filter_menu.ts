@@ -131,8 +131,15 @@ class ItemsMenu extends HTMLElement {
         return card;
         
     }
-}
 
+    setColumn(n:number) {
+	    if (n > 0 && n <=8) {
+		this.ul.classList.remove(`col_${this.column}`);
+		this.column = n;
+		this.ul.classList.add(`col_${this.column}`);
+	    }
+    }
+}
 customElements.define('filter-menu', FilterMenu);
 customElements.define('items-menu', ItemsMenu);
 
