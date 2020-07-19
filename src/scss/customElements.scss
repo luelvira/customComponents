@@ -5,126 +5,11 @@
 	justify-content: center;
 	align-items: center;
 }
-filter-menu {
-	width: 100%;
-	display: block;
-	color: $font-color;
-	font-family: $sans-serif;
-	.filter-menu-nav {
-	@include border_radius(2%, 30%);
-	background-color: $primary-ligth;
-	box-shadow: 0px 0px 5px $primary-shadow, inset 0px 0px 5px $primary-shadow;
-		@extend %flex;
-		width: 100%;
-		margin: 0;
-		padding: 1%;
-		.filter-menu-li {
-			list-style: none;
-			flex: 1 1 0px;
-			text-align: center;
-			cursor: pointer;
-			background-color: $primary;
-			margin: 0 2%;
-			padding: 0.5% 0;
-			box-shadow: 1px 1px 3.5px $primary-shadow;
-			@include border_radius(10%, 30%);
-			&:hover {
-				box-shadow: inset 0px 0px 7px $primary-shadow;
-				color: $font-color-light;
-			}
-			&.active {
-				
-				box-shadow: inset 0px 0px 7px $primary-shadow;
-				background-color: $primary-dark;
-			}
-			&.disable {
-				position: relative;
-				box-shadow: none;
-				&:after {
-					content: "";
-					position: absolute;
-					width: 100%;
-					height: 100%;
-					background-color: #f3f3f3;
-				}
-			}
 
-		}
-	}
-
-
-}
-
-items-menu {
-	%base {
-		margin: 0;
-		padding: 0;
-		&[class*="col_"] {
-			display: flex;
-			flex-wrap: wrap;
-		}
-	}
-
-	.items-menu {
-		@extend %base;
-		//justify-content: flex-start;
-		@for $i from 1 through 8 {
-			&.col_#{$i} {
-				cards-menu {
-					width: 100%/$i -  2*$i;
-				}
-			}
-		}
-	}
-}
-
-cards-menu {
-	box-shadow: 0px 0px 5px $primary-shadow, inset 0px 0px 5px $primary-shadow;
-	margin: 2% 2% 0 0;
-	padding: 1%;
-	float: left;
-	h4 {text-align: center;}
-	img {width: 100%; }
-	transition-duration: $transitionDuration;
-	transition-property: transform, width, height, opacity, left, top;
-	background-color: white;
-	transform-origin: 50%;
-	&:not(.my-card-active):hover {
-		transform: scale(1.05);
-	}
-
-	&.hidden {
-		opacity: 0;
-		padding: 0;
-		margin: 0;
-		width: 0!important
-	}
-
-	&.my-card-active {
-		margin: 0;
-		position: absolute;
-		transform: scale(1.1);
-		left: 30%;
-		top: 10vh;
-		z-index: 5;
-		p{
-			display: none;
-		}
-		div {
-			display: block;
-		}
-
-	}
-	div {
-		display: none;
-		margin: 5% 0;
-	}
-	svg {
-		width: 5%;
-		position: absolute;
-	}
-}
-
+@import 'filter_menu.scss';
+@import 'items_menu.scss';
+@import 'card_menu.scss';
+@import 'board.scss';
 .my-background {
 	position: absolute;
 	left: 0;
@@ -135,4 +20,16 @@ cards-menu {
 	&.inactive {
 		display: none;
 	}
+}
+
+
+.title {
+    font-family: $sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    &-primary {
+        @extend .title;
+        color: $primary;
+    }
 }
