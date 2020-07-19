@@ -29,7 +29,7 @@ class CardMenu extends HTMLElement {
             this.appendChild(this.div);
         }
         catch (Exception) {
-            console.warn("The card is not register on the dom");
+            console.warn("Missing the atributes");
         }
     }
     setSummary(s) {
@@ -108,6 +108,57 @@ class CardMenu extends HTMLElement {
 CardMenu.activeClass = 'my-card-active';
 CardMenu.activeBk = 'my-background';
 customElements.define('cards-menu', CardMenu);
+class ListItems extends HTMLElement {
+    constructor() {
+        super();
+        console.log("Entro");
+    }
+    init(attrs) {
+        this.title = attrs[0];
+        let h1 = document.createElement('h1');
+        h1.innerText = this.title;
+        this.appendChild(h1);
+    }
+}
+class Board extends HTMLElement {
+    constructor() {
+        super();
+        let setAddPanel = (e) => this.addPanel.call(this, e);
+        let wrapper = document.createElement('div');
+        this.container = document.createElement('div');
+        wrapper.classList.add('wrap');
+        try {
+            this.title = this.getAttribute('title');
+        }
+        catch (e) {
+            console.log("Error not attribute title");
+        }
+        let h1 = document.createElement('h1');
+        h1.classList.add('title-primary');
+        h1.innerText = this.title;
+        this.button = document.createElement('button');
+        let div1 = document.createElement('div');
+        let div2 = document.createElement('div');
+        div1.classList.add('bar');
+        div2.classList.add('bar-vertical');
+        wrapper.appendChild(h1);
+        wrapper.appendChild(this.container);
+        this.button.appendChild(div1);
+        this.button.appendChild(div2);
+        this.button.classList.add('add-item');
+        this.appendChild(this.button);
+        this.button.addEventListener('click', setAddPanel);
+        this.appendChild(wrapper);
+    }
+    addPanel(event) {
+        let name = prompt("Cómo se llama la siguiente lista");
+        let list = document.createElement('list-items');
+        this.appendChild(list);
+        list.init([name]);
+    }
+}
+customElements.define('board-element', Board);
+customElements.define('list-items', ListItems);
 class FilterMenu extends HTMLElement {
     constructor() {
         super();

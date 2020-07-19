@@ -1,0 +1,44 @@
+board-element {
+    width: 100%;
+    .wrap {
+        float:left;
+        width: calc(100% - 75px);
+    }
+    button.add-item {
+        float:right;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: $primary-dark;
+        border: none;
+        box-shadow: 3px 3px 5px $primary-shadow;
+        transition: box-shadow, background-color .25s;
+        position:relative;
+        &:hover {
+            cursor: pointer;
+            box-shadow:  0px 0px 5px $primary-shadow, inset 3px 3px 5px;
+            background-color: darken($primary-dark, 2);
+            .bar {
+                transform: rotate(360deg);
+                &-vertical {
+                    transform: rotate(450deg);
+                }
+            }
+
+        }
+        .bar {
+            width: 30px;
+            height: 5px;
+            background-color: white;
+            position:absolute;
+            left: 10px;
+            top: 22.5px;
+            transition: transform .25s;
+            &-vertical {
+                @extend .bar;
+                transform: rotate(90deg);
+            }
+        }
+
+    }
+}
