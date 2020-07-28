@@ -37,9 +37,10 @@ class FilterMenu extends HTMLElement {
 
 
     private  filter(e:Event) {
-        let her:HTMLLIElement = <HTMLLIElement> e.currentTarget;
+        let her:HTMLLIElement = <HTMLLIElement> e!.currentTarget;
+	if (!her) return;
         let tag:string = her.children[0].innerHTML;
-        let parent:FilterMenu = <FilterMenu>her.parentElement.parentElement;
+        let parent:FilterMenu = <FilterMenu>her.parentElement!.parentElement;
         let index:number = parent.actives.indexOf(tag); 
         // if the element is not curren visible
         let state:boolean = index === -1
@@ -75,6 +76,7 @@ class FilterMenu extends HTMLElement {
         let i:number = this.categories.indexOf(c);
         if (i<0) return false;
         this.categories = this.categories.splice(i, 1);
+	return true;
     }
 
     getCategories():string[] {

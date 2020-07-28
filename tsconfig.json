@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
-        "target": "ESNext",
+        "target": "ESnext",
         "module": "amd",
         "outFile": "dist/js/customComponents/main.js",
         "removeComments": true,

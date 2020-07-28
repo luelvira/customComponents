@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env node
 
 const fs = require('fs');
 const http = require('http');
@@ -6,7 +6,6 @@ const http = require('http');
 const options = ['/filter_menu', '/drag_drop'];
 
 const server = (req, res) => {
-        console.log(req.url);
     if (req.url == "/"){
         let content = options.map(e => `<a href="${e}">${e}</a><br>`).join("\n");
         let index =fs.readFileSync("index.html", "UTF-8").replace("{{content}}", content);; 

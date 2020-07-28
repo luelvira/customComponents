@@ -108,57 +108,111 @@ class CardMenu extends HTMLElement {
 CardMenu.activeClass = 'my-card-active';
 CardMenu.activeBk = 'my-background';
 customElements.define('cards-menu', CardMenu);
-class ListItems extends HTMLElement {
-    constructor() {
-        super();
-        console.log("Entro");
-    }
-    init(attrs) {
-        this.title = attrs[0];
-        let h1 = document.createElement('h1');
-        h1.innerText = this.title;
-        this.appendChild(h1);
-    }
-}
-class Board extends HTMLElement {
-    constructor() {
-        super();
-        let setAddPanel = (e) => this.addPanel.call(this, e);
-        let wrapper = document.createElement('div');
-        this.container = document.createElement('div');
-        wrapper.classList.add('wrap');
-        try {
-            this.title = this.getAttribute('title');
+window.onload = function () {
+    class ListItems extends HTMLElement {
+        constructor() {
+            super();
         }
-        catch (e) {
-            console.log("Error not attribute title");
+        init(attrs) {
+            this.title = attrs[0];
+            let h1 = document.createElement('h2');
+            h1.classList.add("title-primary");
+            h1.innerText = this.title;
+            this.appendChild(h1);
         }
-        let h1 = document.createElement('h1');
-        h1.classList.add('title-primary');
-        h1.innerText = this.title;
-        this.button = document.createElement('button');
-        let div1 = document.createElement('div');
-        let div2 = document.createElement('div');
-        div1.classList.add('bar');
-        div2.classList.add('bar-vertical');
-        wrapper.appendChild(h1);
-        wrapper.appendChild(this.container);
-        this.button.appendChild(div1);
-        this.button.appendChild(div2);
-        this.button.classList.add('add-item');
-        this.appendChild(this.button);
-        this.button.addEventListener('click', setAddPanel);
-        this.appendChild(wrapper);
     }
-    addPanel(event) {
-        let name = prompt("Cómo se llama la siguiente lista");
-        let list = document.createElement('list-items');
-        this.appendChild(list);
-        list.init([name]);
+    class Board extends HTMLElement {
+        constructor() {
+            super();
+            let setAddPanel = (e) => this.addPanel.call(this, e);
+            let changeValue = (e) => this.changeValue.call(this, e);
+            let changeInputValue = (e) => this.changeInputValue.call(this, e);
+            let wrapper = document.createElement('div');
+            this.container = document.createElement('div');
+            this.container.classList.add('container');
+            wrapper.classList.add('wrap');
+            let options = document.createElement('div');
+            options.classList.add('options');
+            wrapper.appendChild(this.container);
+            this.title = this._getAttribute('title');
+            this.maxColumn = parseInt(this._getAttribute('column')) || 3;
+            this.baseClass = `col_${this.maxColumn}`;
+            this.container.classList.add(`col_${this.maxColumn}`);
+            let h1 = document.createElement('h1');
+            h1.classList.add('title-primary');
+            h1.innerText = this.title;
+            this.appendChild(h1);
+            let div1 = document.createElement('div');
+            let div2 = document.createElement('div');
+            div1.classList.add('bar');
+            div2.classList.add('bar-vertical');
+            this.button = document.createElement('button');
+            this.button.appendChild(div1);
+            this.button.appendChild(div2);
+            this.button.classList.add('add-item');
+            this.setMaxColumn = document.createElement('div');
+            this.setMaxColumn.classList.add('maxColumn');
+            let lessButton = document.createElement('button');
+            lessButton.innerText = "-";
+            lessButton.setAttribute('id', 'less');
+            lessButton.addEventListener('click', changeValue);
+            let moreButton = document.createElement('button');
+            moreButton.innerText = "+";
+            moreButton.setAttribute('id', 'more');
+            moreButton.addEventListener('click', changeValue);
+            let input = document.createElement('input');
+            input.setAttribute('type', 'number');
+            input.value = this.maxColumn.toString();
+            input.addEventListener('change', changeInputValue);
+            this.setMaxColumn.appendChild(lessButton);
+            this.setMaxColumn.appendChild(input);
+            this.setMaxColumn.appendChild(moreButton);
+            options.appendChild(this.button);
+            options.appendChild(this.setMaxColumn);
+            this.appendChild(options);
+            this.button.addEventListener('click', setAddPanel);
+            this.appendChild(wrapper);
+        }
+        _getAttribute(n) {
+            if (this.hasAttribute(n))
+                return this.getAttribute(n);
+            else
+                return "";
+        }
+        addPanel(event) {
+            let name = prompt("Cómo se llama la siguiente lista");
+            if (!name)
+                return;
+            let list = document.createElement('list-items');
+            this.container.appendChild(list);
+            list.init([name]);
+        }
+        changeValue(event) {
+            let elem = event.target;
+            if (elem.hasAttribute('id'))
+                if (elem.getAttribute('id') === "more")
+                    this.setValue(this.maxColumn + 1);
+                else
+                    this.setValue(this.maxColumn - 1);
+        }
+        changeInputValue(event) {
+            let elem = event.target;
+            this.setValue(parseInt(elem.value));
+        }
+        setValue(n) {
+            if (n == NaN)
+                n = 3;
+            else if (n > 8)
+                n = 8;
+            this.container.classList.remove(`col_${this.maxColumn}`);
+            this.maxColumn = n;
+            this.setMaxColumn.getElementsByTagName('input')[0].value = this.maxColumn.toString();
+            this.container.classList.add(`col_${this.maxColumn}`);
+        }
     }
-}
-customElements.define('board-element', Board);
-customElements.define('list-items', ListItems);
+    customElements.define('board-element', Board);
+    customElements.define('list-items', ListItems);
+};
 class FilterMenu extends HTMLElement {
     constructor() {
         super();
@@ -187,6 +241,8 @@ class FilterMenu extends HTMLElement {
     }
     filter(e) {
         let her = e.currentTarget;
+        if (!her)
+            return;
         let tag = her.children[0].innerHTML;
         let parent = her.parentElement.parentElement;
         let index = parent.actives.indexOf(tag);
@@ -221,6 +277,7 @@ class FilterMenu extends HTMLElement {
         if (i < 0)
             return false;
         this.categories = this.categories.splice(i, 1);
+        return true;
     }
     getCategories() {
         return [...this.categories];
