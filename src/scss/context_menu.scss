@@ -1,0 +1,14 @@
+context-menu {
+	position: absolute;
+	padding: 3px 7px;
+	border: 1px solid $primary-dark;
+	background-color: $primary-ligth;
+	box-shadow: 3px 3px 7px $secundary-dark-alpha;
+	.ul {
+		.li {
+			border-bottom: 3px solid darken($primary-dark, .2);
+			margin: 0;
+			padding: 3px 7px;
+		}
+	}
+}

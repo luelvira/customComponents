@@ -1,19 +1,51 @@
-window.onload = function() {
 class ListItems extends HTMLElement {
     public title:string; 
+    private contextMenu:ContextMenu;
     constructor() {
         super();
     }
 
     public init(attrs:string[]) {
+	let startContextMenu = (e:PointerEvent) =>(("which" in e && e!.which === 3) || ("button" in e && e.button === 2)) ?  this.startContextMenu.call(this, e) : null;
         this.title = attrs[0];
         let h1 = document.createElement('h2') as HTMLHeadingElement;
 	h1.classList.add("title-primary")
         h1.innerText = this.title;
         this.appendChild(h1);
-
-
+	this.addEventListener("click", startContextMenu);
+	this.addEventListener("contextmenu", startContextMenu);
     }
+
+	private startContextMenu(e:PointerEvent) {
+		e.preventDefault();
+		let contextMenu = <ContextMenu>document.createElement('context-menu');
+		this.appendChild(contextMenu);
+		contextMenu.init([
+			{"title": "Cambiar titulo", "action": this.changeTitle, context: this},
+			{"title": "Añadir pelicula", "action": this.addFilm, context: this},
+			{"title": "Ordenar por", "action": this.displayOrder, context: this, "especialEvent": "hover"}
+		]);
+		contextMenu.setPosition(e.pageX, e.pageY);
+	}
+	
+	private setTitle(newTitle:string) {
+		this.getElementsByTagName('h2')[0].innerText = newTitle;
+		this.title = newTitle;
+	}
+
+	public changeTitle(e:Event) {
+		this.setTitle(prompt("Introduzca el nuevo titulo"));
+	}
+
+	private addFilm():void {
+		console.error("This method is not implement");
+	}
+
+	private displayOrder():void {
+		console.error("This method is not implement");
+	}
+	
+
 
 }
 
@@ -126,11 +158,9 @@ class Board extends HTMLElement {
 	    this.maxColumn = n;
 	    this.setMaxColumn.getElementsByTagName('input')[0].value = this.maxColumn.toString();
 	    this.container.classList.add(`col_${this.maxColumn}`);
-
-
     }
+
 
 }
 customElements.define('board-element', Board);
 customElements.define('list-items', ListItems);
-}
