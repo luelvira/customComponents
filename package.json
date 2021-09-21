@@ -10,11 +10,10 @@
     "scss": "sass --watch src/scss/customElements.scss:dist/css/customElements.css --style compressed"
   },
   "keywords": [],
-  "author": "",
+  "author": "lucaselvira96@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.26.3",
-    "scss": "^0.2.4",
     "typescript": "^3.8.3"
   },
   "dependencies": {}
