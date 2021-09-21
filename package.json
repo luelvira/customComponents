@@ -13,8 +13,7 @@
   "author": "lucaselvira96@gmail.com",
   "license": "ISC",
   "devDependencies": {
-    "sass": "^1.26.3",
-    "typescript": "^3.8.3"
-  },
-  "dependencies": {}
+    "sass": "^1.42.0",
+    "typescript": "^3.9.10"
+  }
 }
